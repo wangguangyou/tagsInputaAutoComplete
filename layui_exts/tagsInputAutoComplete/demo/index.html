@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>demo</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../layui/css/layui.css" media="all">
+</head>
+
+<body>
+  <div class="layui-row" style="padding: 50px;">
+    <div class="layui-col-md6">
+      <div id="test" style="width:600px;display: inline-block"></div>
+    </div>
+    <div class="layui-col-md6">
+      <div style="display:flex;justify-content: center;">
+        <div id="test2" style="width:600px"></div>
+        <button id="btn" class="layui-btn">按钮</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../layui/layui.js"></script>
+  <script>
+    var tagsInputAutoCompleteIns
+    layui.config({
+      base: '../../../layui_exts/' //配置 layui 第三方扩展组件存放的基础目录
+    }).extend({
+      tagsInputAutoComplete: 'tagsInputAutoComplete/tagsInputAutoComplete'
+    }).use(['tagsInputAutoComplete'], function () {
+      var tagsInputAutoComplete = layui.tagsInputAutoComplete;
+      //执行示例
+      var options = {
+        elem: '#test',
+        placeholder: '',
+        dropdownonce: true,//dropdownonce为false时dropdown将不会在选择后消失
+        textAppend: true,//不常用
+        inputMode: 'text',//或text
+        tagClassName: 'mytag',//inputMode: 'tags'时为标签设置className
+        autoComplete: true,
+        keyboard: true,
+        maxHeight: '300px',
+        tagsMode: 'toggle',// ||append || replace || toggle
+        width: 100,//数值100则作为百分比 字符串px
+        dropdownMode: 'group', //'group list
+        firstActived: false,//dropdown是否默认激活第一项
+        // autoCompleteData: [{ name: '22' }, { name: '333' }],
+        // autoCompleteData: [{ name: '爱好', list: [{ name: '洗澡' }, { name: '睡觉' }] }, { name: '娱乐', list: [{ name: '音乐' }, { name: '电影' }] }],
+        listTemplate: '<p>{{d.name}}</p>',
+        groupTemplate: '<p>{{d.name}}</p>',//dropdownMode:'group'有效
+        frequency: 0,//inputchange的频率
+        dropdownSelectedStatus: true,//dropdown下的项是否有selected状态
+        tagCloseable: true, //标签项是否可删除
+        inputchange: function (val, allVal, event) {
+          console.group('inputchange')
+          console.log('input变化后的值：', val)//frequency设置频率
+          console.log('全部值：', allVal)
+          console.groupEnd()
+          tagsInputAutoComplete.reload('test', {
+            autoCompleteData: [{ name: '爱好', list: [{ name: '学习' }] }, { name: '娱乐', list: [{ name: '休息' }, { name: '跳舞' }] }]
+          })
+        },
+        backspace: function (val, allVal, event) {
+          console.group('backspace')
+          console.log('被删除tag的值:', val)
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        },
+        enter: function (val, allVal, type, event) {
+          console.group('enter')
+          console.log('回车时的值：', val) //回车选择标签时不触发
+          console.log('类型：', type)
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        },
+        tagClose: function (val, allVal, event) {
+          console.group('tagClose')
+          console.log('被删除tag的值：', val)
+          console.groupEnd()
+        },
+        tagRemove: function (val, allVal, type, event) {
+          console.group('tagRemove')
+          console.log('类型：', type)
+          console.log('被点击tag的值：', val)
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        },
+        tagClick: function (val, allVal, event) {
+          console.group('tagClick')
+          console.log('被点击tag的值：', val)//仅tagCloseable == true 时有效
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        },
+        select: function (val, allVal, event) {
+          console.group('select')
+          console.log('下拉框选择的值：', val)
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        }
+      }
+      var options2 = {
+        elem: '#test2',
+        backable: true,
+        placeholder: '',
+        dropdownonce: true,//dropdownonce为false时dropdown将不会在选择后消失
+        textAppend: false,//不常用
+        inputMode: 'tags',//或text
+        tagClassName: 'mytag',//inputMode: 'tags'时为标签设置className
+        autoComplete: true,
+        keyboard: true,//键盘方向键上下选择是否开启
+        maxHeight: '300px',
+        tagsMode: 'toggle',// ||append || replace || toggle
+        width: 100,//数值100则作为百分比 字符串px
+        dropdownMode: 'list', //'group list
+        firstActived: false,//dropdown是否默认激活第一项
+        // autoCompleteData: [{ name: 'some' }, { name: 'way' }],
+
+        listTemplate: '<p>{{d.name}}</p>',
+        tagCloseable: true, //标签项是否可删除
+        //groupTemplate: '<p>{{d.name}}</p>',//dropdownMode:'group'有效
+        frequency: 0,//inputchange的频率
+        dropdownSelectedStatus: true,//dropdown下的项是否有selected状态
+        inputchange: function (val, allVal, event) {
+          val = val || 'layUi'
+          console.group('inputchange')
+          console.log('input变化后的值：', val)//frequency设置频率
+          console.log('全部值：', allVal)
+          console.groupEnd()
+          tagsInputAutoComplete.reload('test2', {
+            autoCompleteData: [{ name: val + val }, { name: val + val + val }]
+          })
+        },
+        backspace: function (val, allVal, event) {
+          console.group('backspace')
+          console.log('被删除tag的值:', val)
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        },
+        enter: function (val, allVal, type, event) {
+          console.group('enter')
+          console.log('回车时的值：', val) //回车选择标签时不触发
+          console.log('类型：', type)
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        },
+        tagClose: function (val, allVal, event) {
+          console.group('tagClose')
+          console.log('被删除tag的值：', val)
+          console.groupEnd()
+        },
+        tagRemove: function (val, allVal, type, event) {
+          console.group('tagRemove')
+          console.log('类型：', type)
+          console.log('被点击tag的值：', val)
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        },
+        tagClick: function (val, allVal, event) {
+          console.group('tagClick')
+          console.log('被点击tag的值：', val)//仅tagCloseable == true 时有效
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        },
+        select: function (val, allVal, event) {
+          console.group('select')
+          console.log('下拉框选择的值：', val)
+          console.log('全部值：', allVal)
+          console.groupEnd()
+        }
+      }
+      tagsInputAutoCompleteIns = tagsInputAutoComplete.render(options);
+      tagsInputAutoCompleteIns2 = tagsInputAutoComplete.render(options2);
+      console.log('input的值为', tagsInputAutoComplete.getInputValue('test' || '#test'))
+      document.getElementById('btn').addEventListener('click', function () {
+        console.log(tagsInputAutoCompleteIns2.getInputValue())
+      })
+    })
+    function a() {
+      console.log('input的值为', tagsInputAutoCompleteIns.getInputValue())
+    }
+  </script>
+</body>
+
+</html>
