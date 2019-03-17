@@ -1,0 +1,2 @@
+# tagsInputaAutoComplete
+高配置性的layui input组件，可配置为标签input，autoComplate等等
