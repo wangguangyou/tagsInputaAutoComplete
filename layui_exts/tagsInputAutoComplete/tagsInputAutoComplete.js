@@ -69,8 +69,8 @@ layui.define(['jquery', 'laytpl'], function (exports) {
     inputMode: 'tags',//or text(标签input或普通)
     dropdownMode: 'list',//or group(拉下选择框模式)
     frequency: 0,//input改变触发事件的频率
-    tagCloseable: false,//or group(拉下选择框模式)
-    tagClickable: true,//标签项是否有删除标签
+    tagCloseable: false,//标签项是否有删除标签
+    tagClickable: true,//标签项能否点击
     autoComplete: true,//是否开启选择框
     autoCompleteData: [],//选择框的数据 通过reload方法可进行autoComplete更新
     backable: true,//标签是否可被退格键删除
@@ -263,6 +263,7 @@ layui.define(['jquery', 'laytpl'], function (exports) {
       //回车事件
       var val = targetInput.val();
       if (keyCode == '13') {
+        event.preventDefault();
         var trimval = $.trim(val);
         if (show && autoComplete) {
           var dropdown = $('.tagsInputAutoComplete-dropdown.' + uuid)
